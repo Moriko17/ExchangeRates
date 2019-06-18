@@ -30,6 +30,7 @@ class SecondFragment : Fragment() {
 
     private val dw = DateWorker()
     private val rw = RestWorker()
+    private val bw = BookmarkWorker()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         root = inflater.inflate(R.layout.fragment_second, container, false)
@@ -97,6 +98,16 @@ class SecondFragment : Fragment() {
             dpd.datePicker.minDate = dw.getMin()
             dpd.datePicker.maxDate = dw.getMax()
             dpd.show()
+        }
+
+        buttonMark.setOnClickListener{
+            bw.addMark(
+                dateText2.text.toString(),
+                spinner.selectedItem.toString(),
+                editValue.text.toString().toInt(),
+                spinner2.selectedItem.toString(),
+                resValue.text.toString().toFloat()
+            )
         }
 
         rw.requestToCB(rw.urlBuilder())
