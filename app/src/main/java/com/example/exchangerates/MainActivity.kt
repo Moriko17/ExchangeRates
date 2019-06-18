@@ -1,142 +1,19 @@
- package com.example.exchangerates
+package com.example.exchangerates
 
-import android.app.DatePickerDialog
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.View
-import android.widget.*
+import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 
- class MainActivity : AppCompatActivity() {
-     private var usd: Float = 0f
-     private var eur: Float = 0f
-     private var rub: Float = 1f
-     private var jpy: Float = 0f
-     private var updatingProc: Boolean = false
-
-     private val dw = DateWorker()
-     private val rw = RestWorker()
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val textView: TextView = findViewById(R.id.textView)
 
-        textView.text = dw.curDate()
+        val fragmentAdapter = PagerAdapter(supportFragmentManager)
+        viewpager_main.adapter = fragmentAdapter
 
-        editValue.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable) {}
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                calc()
-            }
-        })
-
-        textView.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable) {}
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                val url: String
-                updatingProc = true
-
-                val dateList = dw.parseDate(s.toString())
-                val currDateList = dw.curDateInt()
-
-                url = if (dateList == currDateList) {
-                    rw.urlBuilder()
-                } else {
-                    rw.urlBuilder(dateList[0], dateList[1], dateList[2])
-                }
-
-                rw.requestToCB(url)
-                updateRates(rw.getRates())
-
-                calc()
-            }
-        })
-
-        spinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                calc()
-            }
-        }
-
-        spinner2?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                calc()
-            }
-        }
-
-        rw.requestToCB(rw.urlBuilder())
-        updateRates(rw.getRates())
+        tabs_main.setupWithViewPager(viewpager_main)
     }
-
-    fun changeDate(view: View) {
-        val textView: TextView = findViewById(R.id.textView)
-
-        val currDate = dw.curDateInt()
-
-        val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { _, nYear, nMonth, nDay ->
-            textView.text = dw.buildString(nDay, nMonth, nYear)
-        }, currDate[2], currDate[1], currDate[0])
-
-        dpd.datePicker.minDate = dw.getMin()
-        dpd.datePicker.maxDate = dw.getMax()
-        dpd.show()
-    }
-
-     private fun calc() {
-
-         when(updatingProc) {
-             true -> {
-                 Handler().postDelayed({
-                     calc()
-                 }, 100)
-             }
-             false -> {
-                 val inView: EditText = findViewById(R.id.editValue)
-                 val outView: TextView = findViewById(R.id.resValue)
-                 val inCurSp: Spinner = findViewById(R.id.spinner)
-                 val outCurSp: Spinner = findViewById(R.id.spinner2)
-                 val inCur: String = inCurSp.selectedItem.toString()
-                 val outCur: String = outCurSp.selectedItem.toString()
-                 var inCoef = 0f
-                 var outCoef = 0f
-
-                 if (inView.text.isNullOrEmpty()) {
-                     outView.text = 0.toString()
-                     return
-                 }
-
-                 when(inCur) {
-                     "USD" -> inCoef = usd
-                     "EUR" -> inCoef = eur
-                     "RUB" -> inCoef = rub
-                     "JPY" -> inCoef = jpy
-                 }
-
-                 when(outCur) {
-                     "USD" -> outCoef = usd
-                     "EUR" -> outCoef = eur
-                     "RUB" -> outCoef = rub
-                     "JPY" -> outCoef = jpy
-                 }
-
-                 outView.text = (inView.text.toString().toInt() * inCoef / outCoef).toString()
-             }
-         }
-     }
-
-     fun updateRates(ratesList: MutableList<Float>) {
-         usd = ratesList[0]
-         eur = ratesList[1]
-         jpy = ratesList[2]
-         updatingProc = false
-     }
 }
