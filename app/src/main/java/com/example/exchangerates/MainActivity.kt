@@ -6,7 +6,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
-    val bw = BookmarkWorker()
+    private val bw = BookmarkWorker()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,4 +22,5 @@ class MainActivity : AppCompatActivity() {
         bw.saveToJson(applicationContext)
         super.onStop()
     }
+
 }

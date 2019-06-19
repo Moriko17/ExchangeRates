@@ -71,8 +71,8 @@ class RestWorker {
 
 }
 
-class Rest(val Valute: Valute)
-class Valute(val USD: USD, val EUR: EUR?, val JPY: JPY)
-class USD(val Value: String)
-class EUR(val Value: String?)
-class JPY(val Value: String)
+data class Rest(val Valute: Valute)
+data class Valute(val USD: USD, val EUR: EUR?, val JPY: JPY)
+data class USD(val Value: String)
+data class EUR(val Value: String?)
+data class JPY(val Value: String)

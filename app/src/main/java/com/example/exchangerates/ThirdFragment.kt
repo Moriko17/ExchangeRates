@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.fragment_third.*
  */
 class ThirdFragment : Fragment() {
     private lateinit var root: View
+    private var loaded: Boolean = false
 
     private val bw = BookmarkWorker()
 
@@ -23,16 +24,45 @@ class ThirdFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        var marks = mutableListOf<Mark>()
+        loaded = true
+        printMarks(true)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        loaded = false
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loaded = true
+    }
+
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        if (isVisibleToUser && loaded) {
+            printMarks()
+        }
+    }
+
+    private fun printMarks() {
+        val marks: MutableList<Mark> = bw.getMarks()
         var text = ""
 
-        bw.readFromFile(root.context)
-        marks = bw.getMarks()
+//        bw.readFromFile(root.context)
 
         marks.forEach{
             text = text + it.date +"  "+ it.inCur +"  "+ it.inValue.toString() +"  "+ it.outCur +"  "+ it.outValue.toString() + "\n"
         }
 
         mark.text = text
+    }
+
+    private fun printMarks(readFromFile: Boolean) {
+
+        if (readFromFile) {
+            bw.readFromFile(root.context)
+            printMarks()
+        }
     }
 }// Required empty public constructor

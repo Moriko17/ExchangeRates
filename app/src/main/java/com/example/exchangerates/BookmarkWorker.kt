@@ -20,7 +20,6 @@ class BookmarkWorker {
         if (marksList.size == 10) {
             marksList.removeAt(0)
         }
-        val sz = marksList.size
         marksList.add(mark)
     }
 
@@ -64,8 +63,10 @@ class BookmarkWorker {
             }
         } catch (e: FileNotFoundException) {
             Log.e("login activity", "File not found: $e")
+            return
         } catch (e: IOException) {
             Log.e("login activity", "Can not read file: $e")
+            return
         }
 
         marksList = parseJSON(ret)
@@ -74,9 +75,8 @@ class BookmarkWorker {
 
     private fun parseJSON(jsonString: String): MutableList<Mark> {
         val gson = GsonBuilder().create()
-        val mark = gson.fromJson(jsonString, Array<Mark>::class.java).toMutableList()
 
-        return mark
+        return gson.fromJson(jsonString, Array<Mark>::class.java).toMutableList()
     }
 
     fun getMarks(): MutableList<Mark> {

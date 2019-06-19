@@ -100,9 +100,8 @@ class FirstFragment : Fragment() {
                 val outView2: TextView = root.findViewById(R.id.textView3)
                 val outView3: TextView = root.findViewById(R.id.textView4)
                 val inCurSp: Spinner = root.findViewById(R.id.spinnerSolo)
-                val inCur: String = inCurSp.selectedItem.toString()
 
-                when(inCur) {
+                when(inCurSp.selectedItem.toString()) {
                     "USD" -> {
                         outView1.text = ( usd / eur ).toString()
                         outView2.text = ( usd / rub ).toString()
