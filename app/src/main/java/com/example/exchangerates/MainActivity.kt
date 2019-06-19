@@ -18,9 +18,9 @@ class MainActivity : AppCompatActivity() {
         tabs_main.setupWithViewPager(viewpager_main)
     }
 
-    override fun onStop() {
-        bw.saveToJson(applicationContext)
-        super.onStop()
-    }
+//    override fun onStop() {
+//        bw.saveToJson(applicationContext)
+//        super.onStop()
+//    }
 
 }

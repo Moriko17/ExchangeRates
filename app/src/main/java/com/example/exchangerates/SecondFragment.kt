@@ -9,10 +9,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.EditText
-import android.widget.Spinner
-import android.widget.TextView
+import android.widget.*
 import kotlinx.android.synthetic.main.fragment_second.*
 
 
@@ -101,13 +98,17 @@ class SecondFragment : Fragment() {
         }
 
         buttonMark.setOnClickListener{
-            bw.addMark(
-                dateText2.text.toString(),
-                spinner.selectedItem.toString(),
-                editValue.text.toString().toInt(),
-                spinner2.selectedItem.toString(),
-                resValue.text.toString().toFloat()
-            )
+
+            if (editValue.text.toString() != "" && resValue.text.toString() != "~~~") {
+                bw.addMark(
+                    dateText2.text.toString(),
+                    spinner.selectedItem.toString(),
+                    editValue.text.toString().toInt(),
+                    spinner2.selectedItem.toString(),
+                    resValue.text.toString().toFloat()
+                )
+                Toast.makeText(root.context, "Added to local history.", Toast.LENGTH_LONG).show()
+            }
         }
 
         rw.requestToCB(rw.urlBuilder())
@@ -133,7 +134,7 @@ class SecondFragment : Fragment() {
                 var outCoef = 0f
 
                 if (inView.text.isNullOrEmpty()) {
-                    outView.text = 0.toString()
+                    outView.text = "~~~"
                     return
                 }
 
@@ -151,7 +152,13 @@ class SecondFragment : Fragment() {
                     "JPY" -> outCoef = jpy
                 }
 
-                outView.text = (inView.text.toString().toInt() * inCoef / outCoef).toString()
+                var output = (inView.text.toString().toInt() * inCoef / outCoef).toString()
+
+                if (output == "Infinity" || output == "0.0" || output == "0") {
+                    output = "~~~"
+                }
+
+                outView.text = output
             }
         }
     }

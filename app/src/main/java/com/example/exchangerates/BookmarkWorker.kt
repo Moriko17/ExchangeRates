@@ -11,7 +11,7 @@ import java.io.*
 
 class BookmarkWorker {
     companion object {
-        private var marksList = mutableListOf<Mark>()
+        @JvmStatic private var marksList = mutableListOf<Mark>()
     }
 
     fun addMark(date: String, inCur: String, inValue: Int, outCur: String, outValue: Float) {

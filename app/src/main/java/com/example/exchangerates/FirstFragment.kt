@@ -123,6 +123,20 @@ class FirstFragment : Fragment() {
                         outView3.text = ( jpy / rub ).toString()
                     }
                 }
+
+                if (outView1.text.toString() == "0.0") {
+                    outView1.text = "~~~"
+                    outView2.text = "~~~"
+                    outView3.text = "~~~"
+                }
+
+                if (outView1.text.toString() == "Infinity") {
+                    outView1.text = "~~~"
+                }
+
+                if (outView2.text.toString() == "Infinity") {
+                    outView2.text = "~~~"
+                }
             }
         }
     }

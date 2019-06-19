@@ -16,6 +16,7 @@ class ThirdFragment : Fragment() {
     private var loaded: Boolean = false
 
     private val bw = BookmarkWorker()
+    private lateinit var marksToSave: MutableList<Mark>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -26,10 +27,12 @@ class ThirdFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         loaded = true
         printMarks(true)
+        userVisibleHint = true
     }
 
     override fun onPause() {
         super.onPause()
+        bw.saveToJson(root.context)
         loaded = false
     }
 
@@ -56,6 +59,8 @@ class ThirdFragment : Fragment() {
         }
 
         mark.text = text
+
+        marksToSave = marks
     }
 
     private fun printMarks(readFromFile: Boolean) {
