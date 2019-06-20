@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">ExchangeRates</string>
     <string name="hint">~~~</string>
+    <string name="updating">Updating</string>
     <string-array name="x3">
         <item>USD</item>
         <item>EUR</item>

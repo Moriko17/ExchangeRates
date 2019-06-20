@@ -101,26 +101,47 @@ class FirstFragment : Fragment() {
                 val outView3: TextView = root.findViewById(R.id.textView4)
                 val inCurSp: Spinner = root.findViewById(R.id.spinnerSolo)
 
+                val iconUSD = R.drawable.ic_usd
+                val iconEUR = R.drawable.ic_eur
+                val iconRUB = R.drawable.ic_rub
+                val iconJPY = R.drawable.ic_jpy
+
                 when(inCurSp.selectedItem.toString()) {
                     "USD" -> {
                         outView1.text = ( usd / eur ).toString()
                         outView2.text = ( usd / rub ).toString()
                         outView3.text = ( usd / jpy ).toString()
+
+                        outView1.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconEUR, 0)
+                        outView2.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconRUB, 0)
+                        outView3.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconJPY, 0)
                     }
                     "EUR" -> {
                         outView1.text = ( eur / usd ).toString()
                         outView2.text = ( eur / rub ).toString()
                         outView3.text = ( eur / jpy ).toString()
+
+                        outView1.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconUSD, 0)
+                        outView2.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconRUB, 0)
+                        outView3.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconJPY, 0)
                     }
                     "RUB" -> {
                         outView1.text = ( rub / usd ).toString()
                         outView2.text = ( rub / eur ).toString()
                         outView3.text = ( rub / jpy ).toString()
+
+                        outView1.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconUSD, 0)
+                        outView2.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconEUR, 0)
+                        outView3.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconJPY, 0)
                     }
                     "JPY" -> {
                         outView1.text = ( jpy / usd ).toString()
                         outView2.text = ( jpy / eur ).toString()
                         outView3.text = ( jpy / rub ).toString()
+
+                        outView1.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconUSD, 0)
+                        outView2.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconEUR, 0)
+                        outView3.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconRUB, 0)
                     }
                 }
 

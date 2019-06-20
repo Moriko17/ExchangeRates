@@ -12,10 +12,6 @@ import android.view.ViewGroup
 import android.widget.*
 import kotlinx.android.synthetic.main.fragment_second.*
 
-
-/**
- * A simple [Fragment] subclass.
- */
 class SecondFragment : Fragment() {
 
     private lateinit var root: View
@@ -73,6 +69,7 @@ class SecondFragment : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 calc()
+//                changeIcon()
             }
         }
 
@@ -80,6 +77,7 @@ class SecondFragment : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 calc()
+//                changeIcon()
             }
         }
 
@@ -107,7 +105,7 @@ class SecondFragment : Fragment() {
                     spinner2.selectedItem.toString(),
                     resValue.text.toString().toFloat()
                 )
-                Toast.makeText(root.context, "Added to local history.", Toast.LENGTH_LONG).show()
+                Toast.makeText(root.context, "Added to local history.", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -159,8 +157,39 @@ class SecondFragment : Fragment() {
                 }
 
                 outView.text = output
+                outView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
             }
         }
+    }
+
+    private fun changeIcon() {
+        val inCur = spinner.selectedItem.toString()
+        val outCur = spinner2.selectedItem.toString()
+
+        val iconUSD = R.drawable.ic_usd
+        val iconEUR = R.drawable.ic_eur
+        val iconRUB = R.drawable.ic_rub
+        val iconJPY = R.drawable.ic_jpy
+
+        var inIcon = 0
+        var outIcon = 0
+
+        when(inCur) {
+            "USD" -> inIcon = iconUSD
+            "EUR" -> inIcon = iconEUR
+            "RUB" -> inIcon = iconRUB
+            "JPY" -> inIcon = iconJPY
+        }
+
+        when(outCur) {
+            "USD" -> outIcon = iconUSD
+            "EUR" -> outIcon = iconEUR
+            "RUB" -> outIcon = iconRUB
+            "JPY" -> outIcon = iconJPY
+        }
+
+        editValue.setCompoundDrawablesWithIntrinsicBounds(0, 0, inIcon, 0)
+        resValue.setCompoundDrawablesWithIntrinsicBounds(0, 0, outIcon, 0)
     }
 
     fun updateRates(ratesList: MutableList<Float>) {
@@ -169,4 +198,4 @@ class SecondFragment : Fragment() {
         jpy = ratesList[2]
         updatingProc = false
     }
-}// Required empty public constructor
+}
