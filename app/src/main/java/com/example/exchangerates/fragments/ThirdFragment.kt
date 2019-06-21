@@ -1,4 +1,4 @@
-package com.example.exchangerates
+package com.example.exchangerates.fragments
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -7,6 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import com.example.exchangerates.BookmarkWorker
+import com.example.exchangerates.R
+import com.example.exchangerates.RecyclerViewCustomAdapter
 import com.example.exchangerates.data.Mark
 import kotlinx.android.synthetic.main.fragment_third.*
 

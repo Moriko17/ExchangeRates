@@ -3,6 +3,9 @@ package com.example.exchangerates
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import com.example.exchangerates.fragments.FirstFragment
+import com.example.exchangerates.fragments.SecondFragment
+import com.example.exchangerates.fragments.ThirdFragment
 
 class PagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
