@@ -3,23 +3,22 @@ package com.example.exchangerates
 import java.util.*
 
 class DateWorker {
-    private var minDate: Long = 0
-    private var maxDate: Long = 0
-
-    private val calendar = Calendar.getInstance()
-
-    init {
-        maxDate = calendar.timeInMillis + 1000
-        calendar.set(1993, 1, 1)
-        minDate = calendar.timeInMillis
-    }
 
     fun getMin(): Long {
+        val calendar = Calendar.getInstance()
+        val minDate: Long
+
+        calendar.set(1993, 1, 1)
+        minDate = calendar.timeInMillis
 
         return minDate
     }
 
     fun getMax(): Long {
+        val calendar = Calendar.getInstance()
+        val maxDate: Long
+
+        maxDate = calendar.timeInMillis + 1000
 
         return maxDate
     }

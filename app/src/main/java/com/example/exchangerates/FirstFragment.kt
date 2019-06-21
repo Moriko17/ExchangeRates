@@ -10,25 +10,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.Spinner
-import android.widget.TextView
 import kotlinx.android.synthetic.main.fragment_first.*
 
 
-/**
- * A simple [Fragment] subclass.
- */
 class FirstFragment : Fragment() {
 
     private lateinit var root: View
+
     private var usd: Float = 0f
     private var eur: Float = 0f
     private var rub: Float = 1f
     private var jpy: Float = 0f
-    private var updatingProc: Boolean = false
 
-    private val dw = DateWorker()
-    private val rw = RestWorker()
+    private var updatingProc: Boolean = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         root = inflater.inflate(R.layout.fragment_first, container, false)
@@ -37,12 +31,17 @@ class FirstFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        val dw = DateWorker()
+        val rw = RestWorker()
+
         dateText.text = dw.curDate()
 
         dateText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+
                 val url: String
                 updatingProc = true
 
@@ -70,12 +69,10 @@ class FirstFragment : Fragment() {
         }
 
         button1.setOnClickListener {
-            val textView: TextView = root.findViewById(R.id.dateText)
-
             val currDate = dw.curDateInt()
 
             val dpd = DatePickerDialog(root.context, DatePickerDialog.OnDateSetListener { _, nYear, nMonth, nDay ->
-                textView.text = dw.buildString(nDay, nMonth, nYear)
+                dateText.text = dw.buildString(nDay, nMonth, nYear)
             }, currDate[2], currDate[1], currDate[0])
 
             dpd.datePicker.minDate = dw.getMin()
@@ -96,67 +93,62 @@ class FirstFragment : Fragment() {
                 }, 100)
             }
             false -> {
-                val outView1: TextView = root.findViewById(R.id.textView2)
-                val outView2: TextView = root.findViewById(R.id.textView3)
-                val outView3: TextView = root.findViewById(R.id.textView4)
-                val inCurSp: Spinner = root.findViewById(R.id.spinnerSolo)
-
                 val iconUSD = R.drawable.ic_usd
                 val iconEUR = R.drawable.ic_eur
                 val iconRUB = R.drawable.ic_rub
                 val iconJPY = R.drawable.ic_jpy
 
-                when(inCurSp.selectedItem.toString()) {
+                when(spinnerSolo.selectedItem.toString()) {
                     "USD" -> {
-                        outView1.text = ( usd / eur ).toString()
-                        outView2.text = ( usd / rub ).toString()
-                        outView3.text = ( usd / jpy ).toString()
+                        textView2.text = ( usd / eur ).toString()
+                        textView3.text = ( usd / rub ).toString()
+                        textView4.text = ( usd / jpy ).toString()
 
-                        outView1.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconEUR, 0)
-                        outView2.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconRUB, 0)
-                        outView3.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconJPY, 0)
+                        textView2.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconEUR, 0)
+                        textView3.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconRUB, 0)
+                        textView4.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconJPY, 0)
                     }
                     "EUR" -> {
-                        outView1.text = ( eur / usd ).toString()
-                        outView2.text = ( eur / rub ).toString()
-                        outView3.text = ( eur / jpy ).toString()
+                        textView2.text = ( eur / usd ).toString()
+                        textView3.text = ( eur / rub ).toString()
+                        textView4.text = ( eur / jpy ).toString()
 
-                        outView1.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconUSD, 0)
-                        outView2.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconRUB, 0)
-                        outView3.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconJPY, 0)
+                        textView2.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconUSD, 0)
+                        textView3.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconRUB, 0)
+                        textView4.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconJPY, 0)
                     }
                     "RUB" -> {
-                        outView1.text = ( rub / usd ).toString()
-                        outView2.text = ( rub / eur ).toString()
-                        outView3.text = ( rub / jpy ).toString()
+                        textView2.text = ( rub / usd ).toString()
+                        textView3.text = ( rub / eur ).toString()
+                        textView4.text = ( rub / jpy ).toString()
 
-                        outView1.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconUSD, 0)
-                        outView2.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconEUR, 0)
-                        outView3.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconJPY, 0)
+                        textView2.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconUSD, 0)
+                        textView3.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconEUR, 0)
+                        textView4.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconJPY, 0)
                     }
                     "JPY" -> {
-                        outView1.text = ( jpy / usd ).toString()
-                        outView2.text = ( jpy / eur ).toString()
-                        outView3.text = ( jpy / rub ).toString()
+                        textView2.text = ( jpy / usd ).toString()
+                        textView3.text = ( jpy / eur ).toString()
+                        textView4.text = ( jpy / rub ).toString()
 
-                        outView1.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconUSD, 0)
-                        outView2.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconEUR, 0)
-                        outView3.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconRUB, 0)
+                        textView2.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconUSD, 0)
+                        textView3.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconEUR, 0)
+                        textView4.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconRUB, 0)
                     }
                 }
 
-                if (outView1.text.toString() == "0.0") {
-                    outView1.text = "~~~"
-                    outView2.text = "~~~"
-                    outView3.text = "~~~"
+                if (textView2.text.toString() == "0.0") {
+                    textView2.text = "~~~"
+                    textView3.text = "~~~"
+                    textView4.text = "~~~"
                 }
 
-                if (outView1.text.toString() == "Infinity") {
-                    outView1.text = "~~~"
+                if (textView2.text.toString() == "Infinity") {
+                    textView2.text = "~~~"
                 }
 
-                if (outView2.text.toString() == "Infinity") {
-                    outView2.text = "~~~"
+                if (textView3.text.toString() == "Infinity") {
+                    textView3.text = "~~~"
                 }
             }
         }

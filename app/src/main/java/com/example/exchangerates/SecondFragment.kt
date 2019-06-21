@@ -15,10 +15,12 @@ import kotlinx.android.synthetic.main.fragment_second.*
 class SecondFragment : Fragment() {
 
     private lateinit var root: View
+
     private var usd: Float = 0f
     private var eur: Float = 0f
     private var rub: Float = 1f
     private var jpy: Float = 0f
+
     private var updatingProc: Boolean = false
 
     private val dw = DateWorker()
@@ -69,7 +71,6 @@ class SecondFragment : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 calc()
-//                changeIcon()
             }
         }
 
@@ -77,17 +78,14 @@ class SecondFragment : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 calc()
-//                changeIcon()
             }
         }
 
         button2.setOnClickListener {
-            val textView: TextView = root.findViewById(R.id.dateText2)
-
             val currDate = dw.curDateInt()
 
             val dpd = DatePickerDialog(root.context, DatePickerDialog.OnDateSetListener { _, nYear, nMonth, nDay ->
-                textView.text = dw.buildString(nDay, nMonth, nYear)
+                dateText2.text = dw.buildString(nDay, nMonth, nYear)
             }, currDate[2], currDate[1], currDate[0])
 
             dpd.datePicker.minDate = dw.getMin()
@@ -122,17 +120,14 @@ class SecondFragment : Fragment() {
                 }, 100)
             }
             false -> {
-                val inView: EditText = root.findViewById(R.id.editValue)
-                val outView: TextView = root.findViewById(R.id.resValue)
-                val inCurSp: Spinner = root.findViewById(R.id.spinner)
-                val outCurSp: Spinner = root.findViewById(R.id.spinner2)
-                val inCur: String = inCurSp.selectedItem.toString()
-                val outCur: String = outCurSp.selectedItem.toString()
+                val inCur: String = spinner.selectedItem.toString()
+                val outCur: String = spinner2.selectedItem.toString()
                 var inCoef = 0f
                 var outCoef = 0f
+                var badCheck = false
 
-                if (inView.text.isNullOrEmpty()) {
-                    outView.text = "~~~"
+                if (editValue.text.isNullOrEmpty()) {
+                    resValue.text = "~~~"
                     return
                 }
 
@@ -150,46 +145,21 @@ class SecondFragment : Fragment() {
                     "JPY" -> outCoef = jpy
                 }
 
-                var output = (inView.text.toString().toInt() * inCoef / outCoef).toString()
+                var output = (editValue.text.toString().toInt() * inCoef / outCoef).toString()
 
-                if (output == "Infinity" || output == "0.0" || output == "0") {
+
+                if (output == "Infinity" || output == "0.0" || output == "0" || output == "NaN") {
                     output = "~~~"
+                    badCheck = true
                 }
 
-                outView.text = output
-                outView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
+                if (inCur == outCur && !badCheck) {
+                    resValue.text = editValue.text
+                } else {
+                    resValue.text = output
+                }
             }
         }
-    }
-
-    private fun changeIcon() {
-        val inCur = spinner.selectedItem.toString()
-        val outCur = spinner2.selectedItem.toString()
-
-        val iconUSD = R.drawable.ic_usd
-        val iconEUR = R.drawable.ic_eur
-        val iconRUB = R.drawable.ic_rub
-        val iconJPY = R.drawable.ic_jpy
-
-        var inIcon = 0
-        var outIcon = 0
-
-        when(inCur) {
-            "USD" -> inIcon = iconUSD
-            "EUR" -> inIcon = iconEUR
-            "RUB" -> inIcon = iconRUB
-            "JPY" -> inIcon = iconJPY
-        }
-
-        when(outCur) {
-            "USD" -> outIcon = iconUSD
-            "EUR" -> outIcon = iconEUR
-            "RUB" -> outIcon = iconRUB
-            "JPY" -> outIcon = iconJPY
-        }
-
-        editValue.setCompoundDrawablesWithIntrinsicBounds(0, 0, inIcon, 0)
-        resValue.setCompoundDrawablesWithIntrinsicBounds(0, 0, outIcon, 0)
     }
 
     fun updateRates(ratesList: MutableList<Float>) {

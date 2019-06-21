@@ -1,13 +1,12 @@
 package com.example.exchangerates
 
 import android.os.Handler
+import com.example.exchangerates.data.Rest
 import com.google.gson.GsonBuilder
 import okhttp3.*
 import java.io.IOException
 
 class RestWorker {
-    private val client = OkHttpClient()
-    private val dw = DateWorker()
 
     private var valuesRates = mutableListOf<Float>()
 
@@ -20,6 +19,7 @@ class RestWorker {
     }
 
     fun urlBuilder(day: Int, month: Int, year: Int): String {
+        val dw = DateWorker()
         val fixedDate = dw.buildDate(day, month)
         val urlArch = "/archive/$year/${fixedDate[1]}/${fixedDate[0]}"
 
@@ -27,14 +27,16 @@ class RestWorker {
     }
 
     fun requestToCB(url: String) {
+        val client = OkHttpClient()
         val request = Request.Builder().url(url).build()
 
-        valuesRates = mutableListOf()
+        valuesRates.clear()
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {}
             
             override fun onResponse(call: Call, response: Response) {
+                val dw = DateWorker()
                 val gson = GsonBuilder().create()
                 
                 if (response.code().toString() == "404") {
@@ -70,9 +72,3 @@ class RestWorker {
     }
 
 }
-
-data class Rest(val Valute: Valute)
-data class Valute(val USD: USD, val EUR: EUR?, val JPY: JPY)
-data class USD(val Value: String)
-data class EUR(val Value: String?)
-data class JPY(val Value: String)
